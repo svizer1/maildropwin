@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropWin Mail - Временная почта</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Главный контейнер с сеткой -->
+    <div class="app-container">
+        
+        <!-- Левая панель со списком созданных почт -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="#667eea"/>
+                        <path d="M8 12L16 18L24 12M8 12V22C8 22.5523 8.44772 23 9 23H23C23.5523 23 24 22.5523 24 22V12M8 12L15.293 6.707C15.6835 6.31647 16.3165 6.31647 16.707 6.707L24 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h1>DropWin</h1>
+                </div>
+                <button id="createNewEmailBtn" class="create-new-btn" title="Создать новую почту">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="emails-list-container">
+                <div class="emails-list-header">
+                    <h3>Мои почты</h3>
+                    <span id="emailsCount" class="emails-count">0</span>
+                </div>
+                <div id="emailsList" class="emails-list">
+                    <div class="empty-emails-state">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M24 16V24M24 28V28.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p>Нет созданных почт</p>
+                        <span>Создайте первую почту</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            
+            <!-- Заголовок -->
+            <header class="header">
+                <div>
+                    <h2>Временная почта</h2>
+                    <p class="subtitle">Защитите свою приватность с DropWin Mail</p>
+                </div>
+            </header>
+
+            <!-- Секция текущего email -->
+            <div id="noEmailSelected" class="no-email-state">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                    <circle cx="60" cy="60" r="58" stroke="currentColor" stroke-width="3" opacity="0.2"/>
+                    <path d="M35 50L60 65L85 50" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.3"/>
+                    <rect x="30" y="45" width="60" height="40" rx="4" stroke="currentColor" stroke-width="4" opacity="0.3"/>
+                </svg>
+                <h3>Выберите или создайте почту</h3>
+                <p>Создайте новую временную почту или выберите существующую из списка</p>
+                <button id="createFirstEmailBtn" class="create-first-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Создать первую почту
+                </button>
+            </div>
+
+            <div id="emailContent" class="email-content hidden">
+                <!-- Текущий активный email -->
+                <div class="current-email-section">
+                    <div class="email-display-box">
+                        <div class="email-info">
+                            <label>Активная почта:</label>
+                            <div class="email-text-wrapper">
+                                <span id="currentEmailText" class="email-text"></span>
+                                <button id="copyEmailBtn" class="icon-btn" title="Копировать">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M12 1.5H3.75C2.92157 1.5 2.25 2.17157 2.25 3V12.75M6 16.5H14.25C15.0784 16.5 15.75 15.8284 15.75 15V6.75C15.75 5.92157 15.0784 5.25 14.25 5.25H6C5.17157 5.25 4.5 5.92157 4.5 6.75V15C4.5 15.8284 5.17157 16.5 6 16.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button id="refreshEmailBtn" class="icon-btn" title="Обновить письма">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M2.25 9C2.25 5.27208 5.27208 2.25 9 2.25C11.0597 2.25 12.9084 3.16479 14.1562 4.59375M15.75 9C15.75 12.7279 12.7279 15.75 9 15.75C6.94034 15.75 5.09158 14.8352 3.84375 13.4062" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M14.25 2.25V4.875H11.625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M3.75 15.75V13.125H6.375" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button id="deleteEmailBtn" class="icon-btn delete-btn" title="Удалить почту">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path d="M3.75 4.5H14.25M7.5 8.25V12.75M10.5 8.25V12.75M4.5 4.5L5.25 14.25C5.25 14.6478 5.40804 15.0294 5.68934 15.3107C5.97064 15.592 6.35218 15.75 6.75 15.75H11.25C11.6478 15.75 12.0294 15.592 12.3107 15.3107C12.592 15.0294 12.75 14.6478 12.75 14.25L13.5 4.5M6.75 4.5V3C6.75 2.80109 6.82902 2.61032 6.96967 2.46967C7.11032 2.32902 7.30109 2.25 7.5 2.25H10.5C10.6989 2.25 10.8897 2.32902 11.0303 2.46967C11.171 2.61032 11.25 2.80109 11.25 3V4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="copyNotification" class="toast-notification hidden">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Скопировано!
+                        </div>
+                    </div>
+                    
+                    <div class="email-stats">
+                        <div class="stat-item">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M14 5.33333L8 9.33333L2 5.33333M2 4H14V12C14 12.3536 13.8595 12.6928 13.6095 12.9428C13.3594 13.1929 13.0203 13.3333 12.6667 13.3333H3.33333C2.97971 13.3333 2.64057 13.1929 2.39052 12.9428C2.14048 12.6928 2 12.3536 2 12V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span id="messagesCount">0 писем</span>
+                        </div>
+                        <div class="stat-item">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <span id="autoRefreshStatus">Автообновление: 5 сек</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список входящих писем -->
+                <div class="messages-section">
+                    <div class="messages-header">
+                        <h3>Входящие письма</h3>
+                    </div>
+                    
+                    <div id="messagesList" class="messages-list">
+                        <div class="empty-messages-state">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+                                <path d="M20 28L32 36L44 28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/>
+                                <rect x="18" y="24" width="28" height="20" rx="2" stroke="currentColor" stroke-width="2.5" opacity="0.3"/>
+                            </svg>
+                            <p>Нет входящих писем</p>
+                            <span>Отправьте письмо на этот адрес, и оно появится здесь автоматически</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Модальное окно просмотра письма -->
+    <div id="messageModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalSubject">Тема письма</h3>
+                <button id="closeModalBtn" class="icon-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-info">
+                <div class="info-item">
+                    <strong>От:</strong>
+                    <span id="modalFrom"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Дата:</strong>
+                    <span id="modalDate"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
